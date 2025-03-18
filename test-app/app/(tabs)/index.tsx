@@ -7,9 +7,27 @@ export default function HomeScreen() {
   const [text, onChangeText] = React.useState('https://reactnative.dev/movies.json');
 
   const [webData, setwebData] = useState("");//states and react hooks
-  const request =new XMLHttpRequest();
+  //const request =new XMLHttpRequest();
 
-  function handlePressButtonAsync(){
+  function handlePressButtonAsync() {
+    fetch(text) // Fetch the API endpoint
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+        return response.text(); // Convert the response to text
+      })
+      .then(data => {
+        setwebData(`Status: 200 OK\n${data}`);
+      })
+      .catch(error => {
+        console.warn("Error:", error.message);
+        setwebData(`Error: ${error.message}`);
+      });
+  }
+  
+
+  /*function handlePressButtonAsync(){
       request.onreadystatechange = e => {
         if(request.readyState !== 4) {
           return;
@@ -24,7 +42,7 @@ export default function HomeScreen() {
       request.open('GET', text);
       request.send();
 
-  }
+  }*/
   
   return (
    <View style = {styles.containerColumn}>
